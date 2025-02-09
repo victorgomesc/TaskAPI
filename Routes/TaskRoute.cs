@@ -5,23 +5,27 @@ using Microsoft.EntityFrameworkCore;
 namespace TaskApi.Routes;
 
 public static class TaskRoute {
-    public static void TaskRoutes(this WebApplication app){
+    public static void TaskRoutes(this WebApplication app)
+    {
         var route = app.MapGroup("task");
 
-        route.MapPost("", async (TaskRequest req, TaskContext context ) => {
+        route.MapPost("", async (TaskRequest req, TaskContext context ) => 
+        {
         var task = new TaskModel(req.taskName, req.category, req.priority, req.date);
         await context.AddAsync(task);
         await context.SaveChangesAsync();
     
         return Results.Created($"/task/{task.Id}", task); 
-    });
+        });
 
-        route.MapGet("", async (TaskContext context) => {
+        route.MapGet("", async (TaskContext context) => 
+        {
             var task = await context.Task.ToListAsync();
             return Results.Ok(task);
         });
 
-        route.MapPut("{id:guid}", async (Guid id, TaskRequest req, TaskContext context) => {
+        route.MapPut("{id:guid}", async (Guid id, TaskRequest req, TaskContext context) => 
+        {
             var task = await context.Task.FirstOrDefaultAsync(x => x.Id == id);
 
             if (task == null){
@@ -43,7 +47,8 @@ public static class TaskRoute {
             return Results.Ok(task);
         });
 
-        route.MapDelete("{id:guid}", async (Guid id, TaskContext context) => {
+        route.MapDelete("{id:guid}", async (Guid id, TaskContext context) => 
+        {
             var task = await context.Task.FirstOrDefaultAsync(x => x.Id == id);
 
             if (task == null){
