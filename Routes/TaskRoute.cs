@@ -57,5 +57,24 @@ public static class TaskRoute {
 
             return Results.NoContent();
         });
+
+        route.MapDelete("cleanup", async (TaskContext context) =>
+        {
+            var now = DateTime.UtcNow;
+
+            var expiredTasks = await context.Task
+                .Where(t => t.Date < now) 
+                .ToListAsync();
+
+            if (expiredTasks.Count == 0)
+            {
+                return Results.NotFound("Nenhuma tarefa vencida encontrada.");
+            }
+
+            context.Task.RemoveRange(expiredTasks);
+            await context.SaveChangesAsync();
+
+            return Results.NoContent();
+        });
     }
 }
