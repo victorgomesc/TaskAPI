@@ -33,7 +33,7 @@ public static class TaskRoute {
             }
 
             task.ChangeTaskName(req.taskName);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(); 
 
             task.ChangeCategory(req.category);
             await context.SaveChangesAsync();
