@@ -23,7 +23,6 @@ public static class TaskRoute {
             var task = await context.Task.ToListAsync();
             return Results.Ok(task);
         });
-        <p></p>
 
         route.MapPut("{id:guid}", async (Guid id, TaskRequest req, TaskContext context) => 
         {
